@@ -1,7 +1,7 @@
 from data_set import LinearSeparableDataSet
 from sklearn import svm
 import numpy as np
-from bokeh.models import BoxSelectTool, LassoSelectTool, Spacer
+from bokeh.models import BoxSelectTool, LassoSelectTool, Spacer, Range1d
 from bokeh.plotting import figure, curdoc,output_file, show
 
 def svm_classifier(data,labels):
@@ -9,7 +9,7 @@ def svm_classifier(data,labels):
     clf.fit(data,labels)
     return clf
 
-def main():
+def get_svm_figure():
     n_points = 16
     dataset = LinearSeparableDataSet(n_points)
     dataset = dataset.get_data()
@@ -35,7 +35,7 @@ def main():
     TOOLS = "pan,wheel_zoom,box_select,lasso_select,reset"
     p = figure(tools=TOOLS, plot_width=600, plot_height=600, min_border=10, min_border_left=50,
                toolbar_location="above" , x_axis_label='X_1', y_axis_label='X_2',
-               title="Linearly Separable Data")
+               title="Linearly Separable Data", y_range=Range1d(-2.5, 3.5))
     p.background_fill_color = "#fafafa"
     p.select(BoxSelectTool).select_every_mousemove = False
     p.select(LassoSelectTool).select_every_mousemove = False
@@ -49,10 +49,10 @@ def main():
     p.line(xx, yy_down, line_width=2, line_dash='dashed')
 
     output_file('data.html')
-    show(p)
+    return p
 
 
 if __name__ == '__main__':
-    main()
+    get_svm_figure()
 
 
